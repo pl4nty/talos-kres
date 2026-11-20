@@ -12,9 +12,9 @@ ARG HELMDOCS_VERSION
 RUN --mount=type=cache,target=/root/.cache/go-build,id=kres/root/.cache/go-build --mount=type=cache,target=/go/pkg,id=kres/go/pkg go install github.com/norwoodj/helm-docs/cmd/helm-docs@${HELMDOCS_VERSION} \
 	&& mv /go/bin/helm-docs /bin/helm-docs
 
-FROM ghcr.io/siderolabs/ca-certificates:v1.14.0 AS image-ca-certificates
+FROM --platform=linux/amd64 ghcr.io/siderolabs/ca-certificates:v1.14.0 AS image-ca-certificates
 
-FROM ghcr.io/siderolabs/fhs:v1.14.0 AS image-fhs
+FROM --platform=linux/amd64 ghcr.io/siderolabs/fhs:v1.14.0 AS image-fhs
 
 # runs markdownlint
 FROM docker.io/oven/bun:1.4.2-alpine AS lint-markdown
