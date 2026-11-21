@@ -11,13 +11,8 @@ import (
 	"github.com/siderolabs/kres/internal/project/meta"
 )
 
-// archIndependentPlatform pins architecture-independent pkgs images (fhs, ca-certificates)
-// to a single platform.
-//
-// Their contents (directories, symlinks, a PEM bundle) are the same on every architecture,
-// and pinning them breaks the circular dependency between bldr and pkgs when bootstrapping
-// a new architecture (e.g. riscv64): pkgs need bldr, and the bldr image needs fhs and ca-certificates from pkgs.
-const archIndependentPlatform = "linux/amd64"
+// Pin architecture-neutral images to a single platform. Avoids a circular dependency between bldr and pkgs when bootstrapping a new architecture.
+const archNeutralPlatform = "linux/amd64"
 
 // InputImage provides common input image used to build containers.
 type InputImage struct {
@@ -44,7 +39,7 @@ func NewFHS(*meta.Options) *InputImage {
 
 		Image:    "ghcr.io/siderolabs/fhs",
 		Version:  config.PkgsVersion,
-		Platform: archIndependentPlatform,
+		Platform: archNeutralPlatform,
 	}
 }
 
@@ -55,6 +50,6 @@ func NewCACerts(_ *meta.Options) *InputImage {
 
 		Image:    "ghcr.io/siderolabs/ca-certificates",
 		Version:  config.PkgsVersion,
-		Platform: archIndependentPlatform,
+		Platform: archNeutralPlatform,
 	}
 }
